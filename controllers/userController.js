@@ -7,12 +7,18 @@ exports.signup = async (req, res) => {
   const { name, surname, username, contact, email, password } = req.body;
 
   try {
-    // Check if the user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
+    // Check if the user already exists by email
+    const existingUserByEmail = await User.findOne({ email });
+    if (existingUserByEmail) {
       return res
         .status(400)
         .json({ message: "User with this email already exists!" });
+    }
+
+    // Optionally check if the username already exists
+    const existingUserByUsername = await User.findOne({ username });
+    if (existingUserByUsername) {
+      return res.status(400).json({ message: "Username is already taken!" });
     }
 
     // Hash the password
@@ -38,11 +44,11 @@ exports.signup = async (req, res) => {
 
 // Function to log in a user
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body; // Change to email instead of username
 
   try {
-    // Check if the user exists
-    const user = await User.findOne({ email });
+    // Check if the user exists by email
+    const user = await User.findOne({ email }); // Find by email
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials!" });
     }
