@@ -8,6 +8,9 @@ router.post("/signup", userController.signup);
 // Route for user login
 router.post("/login", userController.login);
 
+// Route for checking if a user exists
+router.post("/check", userController.checkUserExists); // New route for checking user existence
+
 // Route for updating user details
 router.put("/update/:userId", userController.updateUser);
 
